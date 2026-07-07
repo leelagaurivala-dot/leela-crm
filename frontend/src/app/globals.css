@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #FAF7F2 !important;
+    color: #000000 !important;
+    @apply antialiased min-h-screen flex flex-col;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+}
