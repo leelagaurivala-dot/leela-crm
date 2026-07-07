@@ -154,19 +154,6 @@ export default function Home() {
               {loginLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
-
-          {/* Credentials Helper Box */}
-          <div className="mt-6 p-4 bg-[#61191c]/10 border border-[#61191c]/20 rounded-xl text-center">
-            <h4 className="text-[11px] font-bold text-[#61191c] uppercase tracking-wider mb-1">
-              Pre-seeded Login Details:
-            </h4>
-            <p className="text-xs text-slate-600 font-medium">
-              Email: <code className="bg-[#61191c]/10 px-1 py-0.5 rounded font-mono text-[#61191c]">admin@leelacrm.com</code>
-            </p>
-            <p className="text-xs text-slate-600 font-medium mt-1">
-              Pass: <code className="bg-[#61191c]/10 px-1 py-0.5 rounded font-mono text-[#61191c] font-bold">adminpassword</code>
-            </p>
-          </div>
         </div>
       </div>
     </div>

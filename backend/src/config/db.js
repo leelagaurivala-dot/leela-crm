@@ -10,16 +10,20 @@ const connectDB = async () => {
 
     // Seed default Admin User
     const adminEmail = 'admin@leelacrm.com';
-    const adminExists = await User.findOne({ email: adminEmail });
+    const adminPassword = 'J@YshreeeR@m9';
+    const adminExists = await User.findOne({ email: adminEmail }).select('+password');
     if (!adminExists) {
       await User.create({
         name: 'Admin User',
         email: adminEmail,
-        password: 'adminpassword'
+        password: adminPassword
       });
-      console.log(`Default admin user seeded: ${adminEmail} / adminpassword`);
+      console.log(`Default admin user seeded: ${adminEmail} / ${adminPassword}`);
     } else {
-      console.log(`Admin user ${adminEmail} already exists`);
+      // Ensure the password is updated to the new one
+      adminExists.password = adminPassword;
+      await adminExists.save();
+      console.log(`Admin user password verified/updated`);
     }
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
