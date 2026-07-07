@@ -2,9 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 
-export default function LeadsTab({ leads, consultants, inventory = [], onAssignConsultant, onUpdateStatus, token }) {
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+export default function LeadsTab({
+  leads,
+  leadsTotal,
+  leadsPages,
+  leadsPage,
+  setLeadsPage,
+  leadsSearch,
+  onSearchChange,
+  leadsStatus,
+  onStatusChange,
+  leadsLoading,
+  consultants,
+  inventory = [],
+  onAssignConsultant,
+  onUpdateStatus,
+  token
+}) {
+  const [localSearch, setLocalSearch] = useState(leadsSearch);
   const [showShopifyModal, setShowShopifyModal] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -14,15 +29,23 @@ export default function LeadsTab({ leads, consultants, inventory = [], onAssignC
   const [openProductDropdownId, setOpenProductDropdownId] = useState(null);
   const [openConsultantDropdownId, setOpenConsultantDropdownId] = useState(null);
 
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
-  // Reset pagination on filter or search updates
+  // Debounce search query to optimize API request frequency
   useEffect(() => {
-    setCurrentPage(1);
-  }, [search, statusFilter]);
+    const delayDebounceFn = setTimeout(() => {
+      onSearchChange(localSearch);
+    }, 300);
 
+    return () => clearTimeout(delayDebounceFn);
+  }, [localSearch]);
+
+  // Sync local search when parent state updates
+  useEffect(() => {
+    setLocalSearch(leadsSearch);
+  }, [leadsSearch]);
+
+  const apiOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000';
   const shopifySnippet = `<form id="shopify-lead-form" style="max-width: 500px; margin: 20px auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: system-ui, sans-serif; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); box-sizing: border-box;">
   <h3 style="margin-top: 0; margin-bottom: 20px; color: #1e293b; font-size: 1.25rem; font-weight: 700; text-align: center; border-bottom: 2px solid #61191c; padding-bottom: 10px;">Consultation Form</h3>
   
@@ -110,7 +133,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
   statusEl.textContent = 'Submitting your request...';
   
   try {
-    const response = await fetch('https://mvriae-ip-106-219-120-92.tunnelmole.net/api/leads', {
+    const response = await fetch('${apiOrigin}/api/leads', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -142,29 +165,12 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
-  const filteredLeads = leads.filter((lead) => {
-    const matchesSearch =
-      lead.name.toLowerCase().includes(search.toLowerCase()) ||
-      lead.email.toLowerCase().includes(search.toLowerCase()) ||
-      (lead.whatsapp && lead.whatsapp.includes(search)) ||
-      (lead.phone && lead.phone.includes(search)) ||
-      (lead.location && lead.location.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.occupation && lead.occupation.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.concern && lead.concern.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.pob && lead.pob.toLowerCase().includes(search.toLowerCase()));
-
-    const matchesStatus = statusFilter === 'All' || lead.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
-  });
-
-  // Calculate pagination metrics
-  const totalItems = filteredLeads.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-  const activePage = Math.min(currentPage, totalPages);
+  const totalItems = leadsTotal;
+  const totalPages = leadsPages;
+  const activePage = leadsPage;
   const startIndex = (activePage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedLeads = filteredLeads.slice(startIndex, endIndex);
+  const endIndex = startIndex + leads.length;
+  const paginatedLeads = leads;
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -202,8 +208,8 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
           <input
             type="text"
             placeholder="Search leads by name, email, location, occupation, concern..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#61191c] focus:border-[#61191c] transition-all"
           />
         </div>
@@ -214,7 +220,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
               onClick={() => setFilterOpen(!filterOpen)}
               className="flex items-center justify-between gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-sm px-3.5 py-2 text-slate-700 font-semibold cursor-pointer min-w-[135px] transition-colors"
             >
-              <span>{statusFilter === 'All' ? 'All Leads' : statusFilter}</span>
+              <span>{leadsStatus === 'All' ? 'All Leads' : leadsStatus}</span>
               <svg className={`w-3.5 h-3.5 text-slate-450 transition-transform ${filterOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
@@ -227,10 +233,10 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
                     <button
                       key={opt}
                       onClick={() => {
-                        setStatusFilter(opt);
+                        onStatusChange(opt);
                         setFilterOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-xs font-semibold transition-colors cursor-pointer hover:bg-slate-50 ${statusFilter === opt ? 'text-[#61191c] bg-[#61191c]/5 font-bold' : 'text-slate-700'}`}
+                      className={`w-full text-left px-3 py-2 text-xs font-semibold transition-colors cursor-pointer hover:bg-slate-50 ${leadsStatus === opt ? 'text-[#61191c] bg-[#61191c]/5 font-bold' : 'text-slate-700'}`}
                     >
                       {opt === 'All' ? 'All Leads' : opt}
                     </button>
@@ -243,9 +249,14 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
       </div>
 
       {/* Table grid */}
-      <div className="bg-white border border-slate-200 rounded-3xl shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-3xl shadow-sm relative">
+        {leadsLoading && (
+          <div className="absolute inset-0 bg-white/45 backdrop-blur-[1px] flex items-center justify-center z-30 rounded-3xl">
+            <div className="w-10 h-10 border-4 border-slate-200 border-t-[#61191c] rounded-full animate-spin"></div>
+          </div>
+        )}
         <div className="overflow-x-auto lg:overflow-visible pb-36">
-          {filteredLeads.length === 0 ? (
+          {leads.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 mb-3">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -514,7 +525,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
             </div>
             <div className="flex items-center gap-1.5 flex-wrap">
               <button
-                onClick={() => setCurrentPage(1)}
+                onClick={() => setLeadsPage(1)}
                 disabled={activePage === 1}
                 className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50 disabled:hover:bg-white cursor-pointer disabled:cursor-not-allowed transition-colors"
                 title="First Page"
@@ -522,7 +533,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
                 First
               </button>
               <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                onClick={() => setLeadsPage((prev) => Math.max(prev - 1, 1))}
                 disabled={activePage === 1}
                 className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50 disabled:hover:bg-white cursor-pointer disabled:cursor-not-allowed transition-colors"
               >
@@ -540,7 +551,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
                   return (
                     <button
                       key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
+                      onClick={() => setLeadsPage(pageNum)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-bold cursor-pointer transition-colors ${
                         activePage === pageNum
                           ? 'bg-[#61191c] text-white border-[#61191c]'
@@ -564,14 +575,14 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
               })}
 
               <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() => setLeadsPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={activePage === totalPages}
                 className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50 disabled:hover:bg-white cursor-pointer disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>
               <button
-                onClick={() => setCurrentPage(totalPages)}
+                onClick={() => setLeadsPage(totalPages)}
                 disabled={activePage === totalPages}
                 className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-50 disabled:hover:bg-white cursor-pointer disabled:cursor-not-allowed transition-colors"
                 title="Last Page"

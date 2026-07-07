@@ -45,5 +45,8 @@ const inventorySchema = new mongoose.Schema(
   }
 );
 
+inventorySchema.index({ shopifyProductId: 1 });
+inventorySchema.index({ shopifyVariantId: 1 });
+
 const Inventory = mongoose.model('Inventory', inventorySchema);
 export default Inventory;

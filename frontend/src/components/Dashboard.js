@@ -15,11 +15,50 @@ export default function Dashboard({ token, user, onLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:5000';
 
   const [syncing, setSyncing] = useState(false);
 
-  // Fetch initial data
+  // Pagination, Search, and Status Filter states for Leads
+  const [leadsPage, setLeadsPage] = useState(1);
+  const [leadsSearch, setLeadsSearch] = useState('');
+  const [leadsStatus, setLeadsStatus] = useState('All');
+  const [leadsTotal, setLeadsTotal] = useState(0);
+  const [leadsPages, setLeadsPages] = useState(1);
+  const [leadsLoading, setLeadsLoading] = useState(false);
+
+  const fetchLeads = async (pageVal = leadsPage, searchVal = leadsSearch, statusVal = leadsStatus, silent = false) => {
+    if (!silent) setLeadsLoading(true);
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+
+      const queryParams = new URLSearchParams({
+        page: pageVal,
+        limit: 20,
+        search: searchVal,
+        status: statusVal
+      });
+
+      const res = await fetch(`${API_URL}/api/leads?${queryParams.toString()}`, { headers });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Failed to fetch leads');
+
+      setLeads(data.leads || []);
+      setLeadsTotal(data.total || 0);
+      setLeadsPages(data.pages || 1);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'An error occurred while loading leads data');
+    } finally {
+      if (!silent) setLeadsLoading(false);
+    }
+  };
+
+  // Fetch initial data (excluding leads since they are loaded by the pagination useEffect)
   const fetchData = async (silent = false) => {
     if (!silent) setLoading(true);
     setError('');
@@ -35,17 +74,14 @@ export default function Dashboard({ token, user, onLogout }) {
       if (!consRes.ok) throw new Error(consData.error || 'Failed to fetch consultants');
       setConsultants(consData);
 
-      // Fetch leads
-      const leadsRes = await fetch(`${API_URL}/api/leads`, { headers });
-      const leadsData = await leadsRes.json();
-      if (!leadsRes.ok) throw new Error(leadsData.error || 'Failed to fetch leads');
-      setLeads(leadsData);
-
       // Fetch inventory
       const invRes = await fetch(`${API_URL}/api/inventory`, { headers });
       const invData = await invRes.json();
       if (!invRes.ok) throw new Error(invData.error || 'Failed to fetch inventory');
       setInventory(invData);
+
+      // Fetch leads matching current states silently
+      await fetchLeads(leadsPage, leadsSearch, leadsStatus, true);
 
     } catch (err) {
       console.error(err);
@@ -66,6 +102,23 @@ export default function Dashboard({ token, user, onLogout }) {
       fetchData();
     }
   }, [token]);
+
+  // Refetch leads when page, search query, or status filter changes
+  useEffect(() => {
+    if (token) {
+      fetchLeads(leadsPage, leadsSearch, leadsStatus);
+    }
+  }, [token, leadsPage, leadsSearch, leadsStatus]);
+
+  const handleSearchChange = (val) => {
+    setLeadsSearch(val);
+    setLeadsPage(1);
+  };
+
+  const handleStatusChange = (val) => {
+    setLeadsStatus(val);
+    setLeadsPage(1);
+  };
 
   // Lead actions
   const handleAssignConsultant = async (leadId, consultantId) => {
@@ -290,6 +343,15 @@ export default function Dashboard({ token, user, onLogout }) {
         return (
           <LeadsTab
             leads={leads}
+            leadsTotal={leadsTotal}
+            leadsPages={leadsPages}
+            leadsPage={leadsPage}
+            setLeadsPage={setLeadsPage}
+            leadsSearch={leadsSearch}
+            onSearchChange={handleSearchChange}
+            leadsStatus={leadsStatus}
+            onStatusChange={handleStatusChange}
+            leadsLoading={leadsLoading}
             consultants={consultants}
             inventory={inventory}
             onAssignConsultant={handleAssignConsultant}

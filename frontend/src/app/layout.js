@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Leela CRM - Next-Gen Relationship Management",
   description: "Manage customer relations, track sales pipelines, and analyze deal progress in a beautiful dashboard.",
+  icons: {
+    icon: "/fab-icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

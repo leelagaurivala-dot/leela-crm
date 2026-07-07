@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next build && node copy-build.js",
     "start": "next start",
     "lint": "eslint"
   },

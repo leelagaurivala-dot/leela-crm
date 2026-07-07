@@ -148,14 +148,53 @@ router.post('/leads', async (req, res) => {
   }
 });
 
-// Protected: Get all leads for the dashboard
+// Protected: Get all leads for the dashboard (with pagination, filter, search)
 router.get('/leads', protect, async (req, res) => {
   try {
-    const leads = await Lead.find({})
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 20;
+    const skip = (page - 1) * limit;
+
+    const query = {};
+
+    // Filter by status if provided and not 'All'
+    if (req.query.status && req.query.status !== 'All') {
+      query.status = req.query.status;
+    }
+
+    // Search filter across searchable fields
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, 'i');
+      query.$or = [
+        { name: searchRegex },
+        { email: searchRegex },
+        { phone: searchRegex },
+        { whatsapp: searchRegex },
+        { location: searchRegex },
+        { occupation: searchRegex },
+        { concern: searchRegex },
+        { pob: searchRegex }
+      ];
+    }
+
+    // Run count query
+    const total = await Lead.countDocuments(query);
+
+    // Get paginated leads with populated references
+    const leads = await Lead.find(query)
       .populate('consultant', 'name email phone')
       .populate('convertedProduct', 'name sku price')
-      .sort({ createdAt: -1 });
-    res.json(leads);
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    res.json({
+      leads,
+      total,
+      pages: Math.ceil(total / limit),
+      currentPage: page
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error fetching leads' });

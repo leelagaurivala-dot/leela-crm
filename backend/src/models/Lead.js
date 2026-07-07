@@ -72,5 +72,9 @@ const leadSchema = new mongoose.Schema(
   }
 );
 
+leadSchema.index({ createdAt: -1 });
+leadSchema.index({ status: 1 });
+leadSchema.index({ consultant: 1 });
+
 const Lead = mongoose.model('Lead', leadSchema);
 export default Lead;
