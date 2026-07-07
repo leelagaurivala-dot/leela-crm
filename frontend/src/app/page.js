@@ -14,7 +14,9 @@ export default function Home() {
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:5000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL !== undefined 
+    ? process.env.NEXT_PUBLIC_API_URL 
+    : (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000');
 
   useEffect(() => {
     // Check localStorage on mount

@@ -15,7 +15,9 @@ export default function Dashboard({ token, user, onLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:5000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL !== undefined 
+    ? process.env.NEXT_PUBLIC_API_URL 
+    : (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000');
 
   const [syncing, setSyncing] = useState(false);
 
