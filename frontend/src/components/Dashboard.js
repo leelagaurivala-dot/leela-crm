@@ -98,10 +98,23 @@ export default function Dashboard({ token, user, onLogout }) {
   };
 
   useEffect(() => {
+    const savedTab = localStorage.getItem('crm_active_tab');
+    if (savedTab) {
+      setActiveTab(savedTab);
+    }
+  }, []);
+
+  useEffect(() => {
     if (token) {
       fetchData();
     }
   }, [token]);
+
+  const handleTabSelect = (tabName) => {
+    setActiveTab(tabName);
+    localStorage.setItem('crm_active_tab', tabName);
+    setSidebarOpen(false);
+  };
 
   // Refetch leads when page, search query, or status filter changes
   useEffect(() => {
@@ -427,7 +440,7 @@ export default function Dashboard({ token, user, onLogout }) {
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {/* Leads Menu */}
           <button
-            onClick={() => { setActiveTab('leads'); setSidebarOpen(false); }}
+            onClick={() => handleTabSelect('leads')}
             className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'leads'
                 ? 'bg-white/10 text-white shadow-xs'
@@ -442,7 +455,7 @@ export default function Dashboard({ token, user, onLogout }) {
 
           {/* Inventory Menu */}
           <button
-            onClick={() => { setActiveTab('inventory'); setSidebarOpen(false); }}
+            onClick={() => handleTabSelect('inventory')}
             className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'inventory'
                 ? 'bg-white/10 text-white shadow-xs'
@@ -457,7 +470,7 @@ export default function Dashboard({ token, user, onLogout }) {
 
           {/* Add Consultant Menu */}
           <button
-            onClick={() => { setActiveTab('consultants'); setSidebarOpen(false); }}
+            onClick={() => handleTabSelect('consultants')}
             className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'consultants'
                 ? 'bg-white/10 text-white shadow-xs'

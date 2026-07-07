@@ -92,7 +92,7 @@ export default function InventoryTab({ inventory }) {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`font-semibold text-xs px-2.5 py-0.5 rounded-full border ${
+                        className={`font-semibold text-xs px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                           item.quantity === 0
                             ? 'bg-rose-50 text-rose-700 border-rose-200'
                             : item.quantity < 10
