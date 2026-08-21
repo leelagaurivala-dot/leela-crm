@@ -46,68 +46,236 @@ export default function LeadsTab({
   }, [leadsSearch]);
 
   const apiOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000';
-  const shopifySnippet = `<form id="shopify-lead-form" style="max-width: 500px; margin: 20px auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: system-ui, sans-serif; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); box-sizing: border-box;">
-  <h3 style="margin-top: 0; margin-bottom: 20px; color: #1e293b; font-size: 1.25rem; font-weight: 700; text-align: center; border-bottom: 2px solid #61191c; padding-bottom: 10px;">Consultation Form</h3>
-  
-  <div style="margin-bottom: 15px;">
-    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Full Name *</label>
-    <input type="text" name="name" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="John Doe">
-  </div>
-
-  <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Date of Birth *</label>
-      <input type="date" name="dob" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;">
-    </div>
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Time of Birth *</label>
-      <input type="time" name="tob" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;">
-    </div>
-  </div>
-
-  <div style="margin-bottom: 15px;">
-    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Place of Birth *</label>
-    <input type="text" name="pob" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="City, State, Country">
-  </div>
-
-  <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">WhatsApp Number *</label>
-      <input type="tel" name="whatsapp" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="e.g. 9876543210">
-    </div>
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Email ID *</label>
-      <input type="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="john@example.com">
-    </div>
-  </div>
-
-  <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Current Location *</label>
-      <input type="text" name="location" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="City, Country">
-    </div>
-    <div style="flex: 1; min-width: 180px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Occupation *</label>
-      <input type="text" name="occupation" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="e.g. Software Engineer">
+  const shopifySnippet = `<!-- Consultation Form Wrapper -->
+<div class="consultation-form-container">
+  <div class="form-header">
+    <h3>CONSULTATION FORM</h3>
+    <div class="vedic-notice">
+      <p><strong>Optional Donation Basis:</strong> As we follow the sacred Vedic path, we do not charge a mandatory fee for astrology consultations. However, voluntary contributions are warmly welcomed and utilized for noble & charitable causes.</p>
+      <p class="sub-notice">If you do not wish to donate at this time, simply enter <strong>0</strong> in the payment box below.</p>
     </div>
   </div>
   
-  <div style="margin-bottom: 20px;">
-    <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.875rem; color: #475569;">Area of Concern (If any)</label>
-    <textarea name="concern" rows="3" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; resize: vertical; box-sizing: border-box;" placeholder="e.g. Health, Career, Relationship advice..."></textarea>
-  </div>
-  
-  <button type="submit" style="background: #61191c; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: 600; font-size: 0.875rem; cursor: pointer; width: 100%; transition: background 0.2s;">
-    Submit Consultation Request
-  </button>
-  <p id="form-status" style="margin-top: 12px; display: none; text-align: center; font-weight: 600; font-size: 0.875rem;"></p>
-</form>
+  <form id="shopify-lead-form">
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" name="name" required placeholder="Enter your full name">
+    </div>
 
+    <div class="form-row">
+      <div class="form-group flex-1">
+        <label>Date of Birth *</label>
+        <input type="date" name="dob" required>
+      </div>
+      <div class="form-group flex-1">
+        <label>Time of Birth *</label>
+        <input type="time" name="tob" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Place of Birth *</label>
+      <input type="text" name="pob" required placeholder="City, State, Country">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group flex-1">
+        <label>WhatsApp Number *</label>
+        <input type="tel" name="whatsapp" required placeholder="e.g. 9876543210">
+      </div>
+      <div class="form-group flex-1">
+        <label>Email ID *</label>
+        <input type="email" name="email" required placeholder="john@example.com">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group flex-1">
+        <label>Current Location *</label>
+        <input type="text" name="location" required placeholder="City, Country">
+      </div>
+      <div class="form-group flex-1">
+        <label>Occupation</label>
+        <input type="text" name="occupation" placeholder="e.g. Businessman, Software Engineer">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Medical History (If any)</label>
+      <input type="text" name="medicalHistory" placeholder="Mention any past or ongoing health conditions">
+    </div>
+
+    <div class="form-group">
+      <label>Currently wearing any Rudraksh or Crystal products?</label>
+      <input type="text" name="wearingRudraksh" placeholder="If yes, please specify which ones (e.g. 5 Mukhi Rudraksha, Amethyst)">
+    </div>
+
+    <div class="form-group">
+      <label>Preferred Time for Consultation (If any)</label>
+      <input type="text" name="preferredTime" placeholder="e.g. Evening after 6 PM, Weekends">
+    </div>
+
+    <div class="form-group">
+      <label>Area of Concern (If any)</label>
+      <textarea name="concern" rows="3" placeholder="Describe your key concerns (Health, Career, Marriage, Finance, etc.)"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Website Product Interest</label>
+      <input type="text" name="websiteProduct" placeholder="If you like something on our website, please mention product name or link">
+    </div>
+
+    <div class="form-group donation-box">
+      <label>Optional Donation Contribution (₹)</label>
+      <input type="number" name="donationAmount" min="0" value="0" placeholder="Enter amount or 0 if not donating">
+      <span class="donation-hint">Enter 0 if you do not wish to contribute today. If you enter a donation amount, our team will contact you directly to share the payment details.</span>
+    </div>
+    
+    <button type="submit" class="submit-btn">Submit Consultation Request</button>
+    <p id="form-status" class="status-msg"></p>
+  </form>
+</div>
+
+<!-- Embedded styling -->
+<style>
+.consultation-form-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+  box-shadow: 0 12px 24px -4px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.04);
+  box-sizing: border-box;
+}
+.consultation-form-container h3 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  border-bottom: 3px solid #61191c;
+  padding-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.vedic-notice {
+  background-color: #FAF7F2;
+  border: 1px solid #f1e5d8;
+  border-left: 4px solid #61191c;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+.vedic-notice p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.55;
+}
+.vedic-notice .sub-notice {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #61191c;
+}
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 650;
+  font-size: 0.85rem;
+  color: #334155;
+}
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #61191c;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(97, 25, 28, 0.12);
+}
+.donation-box {
+  background: #fdfbf7;
+  padding: 14px;
+  border: 1px dashed #e2d3c3;
+  border-radius: 12px;
+}
+.donation-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 6px;
+  line-height: 1.45;
+  display: block;
+}
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+.flex-1 {
+  flex: 1;
+}
+.submit-btn {
+  background: #61191c;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(97, 25, 28, 0.2);
+}
+.submit-btn:hover {
+  background: #521316;
+  transform: translateY(-1px);
+}
+.submit-btn:active {
+  transform: translateY(0);
+}
+.status-msg {
+  margin-top: 15px;
+  display: none;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .consultation-form-container {
+    padding: 20px;
+    margin: 15px auto;
+  }
+}
+</style>
+
+<!-- Intercept and submit data to API -->
 <script>
 document.getElementById('shopify-lead-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const form = e.target;
   const statusEl = document.getElementById('form-status');
+  const submitBtn = form.querySelector('.submit-btn');
   
   const formData = {
     name: form.elements.name.value,
@@ -118,9 +286,14 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
     tob: form.elements.tob.value,
     pob: form.elements.pob.value,
     location: form.elements.location.value,
-    occupation: form.elements.occupation.value,
-    concern: form.elements.concern.value,
-    message: form.elements.concern.value || '',
+    occupation: form.elements.occupation ? form.elements.occupation.value : '',
+    medicalHistory: form.elements.medicalHistory ? form.elements.medicalHistory.value : '',
+    wearingRudraksh: form.elements.wearingRudraksh ? form.elements.wearingRudraksh.value : '',
+    preferredTime: form.elements.preferredTime ? form.elements.preferredTime.value : '',
+    concern: form.elements.concern ? form.elements.concern.value : '',
+    websiteProduct: form.elements.websiteProduct ? form.elements.websiteProduct.value : '',
+    donationAmount: form.elements.donationAmount ? form.elements.donationAmount.value : '0',
+    message: form.elements.concern ? form.elements.concern.value : '',
     shopifyData: {
       domain: window.location.hostname,
       path: window.location.pathname,
@@ -131,6 +304,8 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
   statusEl.style.display = 'block';
   statusEl.style.color = '#475569';
   statusEl.textContent = 'Submitting your request...';
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.7';
   
   try {
     const response = await fetch('${apiOrigin}/api/leads', {
@@ -145,7 +320,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
     
     if (response.ok && result.success) {
       statusEl.style.color = '#16a34a';
-      statusEl.textContent = 'Thank you! Your consultation request has been submitted.';
+      statusEl.textContent = 'Thank you! Your consultation request has been submitted successfully.';
       form.reset();
     } else {
       statusEl.style.color = '#dc2626';
@@ -154,7 +329,10 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
   } catch (error) {
     console.error('Error submitting form:', error);
     statusEl.style.color = '#dc2626';
-    statusEl.textContent = 'Connection error. Please check backend is running.';
+    statusEl.textContent = 'Connection error. Please check if your CRM backend server is running.';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = '1';
   }
 });
 </script>`;
@@ -207,7 +385,7 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
           </span>
           <input
             type="text"
-            placeholder="Search leads by name, email, location, occupation, concern..."
+            placeholder="Search leads by name, email, location, occupation, medical history, rudraksh, product..."
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#61191c] focus:border-[#61191c] transition-all"
@@ -269,12 +447,12 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
               </p>
             </div>
           ) : (
-            <table className="w-full border-collapse text-left min-w-[1000px]">
+            <table className="w-full border-collapse text-left min-w-[1050px]">
               <thead>
                 <tr className="bg-slate-50/70 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   <th className="px-6 py-4">Client / Profile</th>
                   <th className="px-6 py-4">Birth Details</th>
-                  <th className="px-6 py-4">Area of Concern</th>
+                  <th className="px-6 py-4">Consultation & Concern</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4">Assigned Consultant</th>
                   <th className="px-6 py-4">Date Added</th>
@@ -317,6 +495,9 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
                           {lead.occupation && (
                             <div>Occ: <span className="font-semibold text-slate-700">{lead.occupation}</span></div>
                           )}
+                          {lead.preferredTime && (
+                            <div>Time: <span className="font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded">{lead.preferredTime}</span></div>
+                          )}
                         </div>
                       </td>
 
@@ -338,16 +519,51 @@ document.getElementById('shopify-lead-form').addEventListener('submit', async fu
                         </div>
                       </td>
 
-                      {/* Area of Concern */}
-                      <td className="px-6 py-4 align-top max-w-sm whitespace-normal">
-                        <p className="text-slate-655 font-medium leading-relaxed whitespace-pre-line text-xs">
-                          {lead.concern || lead.message || <span className="text-slate-400 italic">No concern specified</span>}
-                        </p>
-                        {lead.shopifyData && lead.shopifyData.domain && (
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-500 mt-2">
-                            Shopify: {lead.shopifyData.domain}
-                          </span>
-                        )}
+                      {/* Consultation & Concern Details */}
+                      <td className="px-6 py-4 align-top max-w-sm whitespace-normal space-y-2">
+                        {/* Area of Concern */}
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Area of Concern:</span>
+                          <p className="text-slate-800 font-medium leading-relaxed whitespace-pre-line text-xs mt-0.5">
+                            {lead.concern || lead.message || <span className="text-slate-400 italic">No concern specified</span>}
+                          </p>
+                        </div>
+
+                        {/* Additional fields */}
+                        <div className="space-y-1 pt-1 border-t border-slate-100 text-xs">
+                          {lead.medicalHistory && (
+                            <div className="text-slate-600">
+                              <span className="font-semibold text-slate-700">Medical:</span> {lead.medicalHistory}
+                            </div>
+                          )}
+                          {lead.wearingRudraksh && (
+                            <div className="text-slate-600">
+                              <span className="font-semibold text-slate-700">Rudraksh/Crystals:</span> {lead.wearingRudraksh}
+                            </div>
+                          )}
+                          {lead.websiteProduct && (
+                            <div className="text-slate-600">
+                              <span className="font-semibold text-slate-700">Product Interest:</span> {lead.websiteProduct}
+                            </div>
+                          )}
+                          
+                          {/* Donation Amount Badge */}
+                          <div className="flex items-center gap-2 pt-1">
+                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold ${
+                              Number(lead.donationAmount) > 0
+                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                : 'bg-slate-100 text-slate-600 border border-slate-200'
+                            }`}>
+                              Donation: ₹{lead.donationAmount || '0'}
+                            </span>
+
+                            {lead.shopifyData && lead.shopifyData.domain && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-500">
+                                Shopify
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </td>
 
                       {/* Status */}

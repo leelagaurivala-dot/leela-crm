@@ -115,7 +115,25 @@ router.post('/leads', async (req, res) => {
       }
     }
 
-    const { name, email, phone, whatsapp, dob, tob, pob, location, occupation, concern, message, shopifyData } = body;
+    const {
+      name,
+      email,
+      phone,
+      whatsapp,
+      dob,
+      tob,
+      pob,
+      location,
+      occupation,
+      concern,
+      message,
+      medicalHistory,
+      wearingRudraksh,
+      preferredTime,
+      websiteProduct,
+      donationAmount,
+      shopifyData
+    } = body;
 
     if (!name || !email) {
       return res.status(400).json({ error: 'Name and email are required to submit a lead' });
@@ -131,6 +149,11 @@ router.post('/leads', async (req, res) => {
       pob: pob || '',
       location: location || '',
       occupation: occupation || '',
+      medicalHistory: medicalHistory || '',
+      wearingRudraksh: wearingRudraksh || '',
+      preferredTime: preferredTime || '',
+      websiteProduct: websiteProduct || '',
+      donationAmount: donationAmount !== undefined && donationAmount !== null ? String(donationAmount) : '0',
       concern: concern || '',
       message: message || '',
       shopifyData: shopifyData || {},
@@ -173,7 +196,11 @@ router.get('/leads', protect, async (req, res) => {
         { location: searchRegex },
         { occupation: searchRegex },
         { concern: searchRegex },
-        { pob: searchRegex }
+        { pob: searchRegex },
+        { medicalHistory: searchRegex },
+        { wearingRudraksh: searchRegex },
+        { preferredTime: searchRegex },
+        { websiteProduct: searchRegex }
       ];
     }
 
