@@ -408,16 +408,16 @@ export default function Dashboard({ token, user, onLogout }) {
       )}
 
       {/* LEFT SIDEBAR */}
-      <aside className={`w-[280px] bg-[#61191c] flex flex-col fixed z-40 transition-transform duration-300 ease-in-out ${
+      <aside className={`w-[255px] bg-[#61191c] flex flex-col fixed z-40 transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 h-screen md:h-[calc(100vh-32px)] md:my-4 md:ml-4 rounded-r-3xl md:rounded-3xl shadow-2xl`}>
+      } md:translate-x-0 h-screen md:h-[calc(100vh-24px)] md:my-3 md:ml-3 rounded-r-2xl md:rounded-2xl shadow-xl`}>
         {/* Brand Header */}
-        <div className="h-[80px] flex items-center justify-center px-6 relative">
-          <img src="/logo.png" alt="Leela Logo" className="h-14 w-auto object-contain rounded-xl" />
+        <div className="h-[75px] flex items-center justify-center px-4 relative shrink-0">
+          <img src="/logo.png" alt="Leela Logo" className="h-12 w-auto object-contain rounded-lg" />
           {/* Close button for mobile */}
           <button 
             onClick={() => setSidebarOpen(false)}
-            className="absolute right-4 p-1.5 rounded-lg hover:bg-white/10 md:hidden cursor-pointer text-white/80"
+            className="absolute right-3 p-1 rounded-lg hover:bg-white/10 md:hidden cursor-pointer text-white/80"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -426,82 +426,82 @@ export default function Dashboard({ token, user, onLogout }) {
         </div>
 
         {/* User profile brief */}
-        <div className="p-4 mx-4 my-2 bg-white/5 rounded-2xl">
+        <div className="p-3.5 mx-3.5 my-1.5 bg-white/5 rounded-xl border border-white/10 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/10 text-white rounded-full flex items-center justify-center font-bold text-sm">
+            <div className="w-9 h-9 bg-white/10 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">
               {user.name ? user.name[0].toUpperCase() : 'A'}
             </div>
-            <div className="overflow-hidden">
-              <h4 className="text-sm font-bold text-white truncate">{user.name || 'Admin'}</h4>
+            <div className="overflow-hidden min-w-0">
+              <h4 className="text-xs font-bold text-white truncate">{user.name || 'Admin'}</h4>
               <p className="text-[11px] font-medium text-white/70 truncate">{user.email}</p>
             </div>
           </div>
         </div>
 
         {/* Navigation Menus */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        <nav className="flex-1 px-3.5 py-4 space-y-1.5 overflow-y-auto">
           {/* Leads Menu */}
           <button
             onClick={() => handleTabSelect('leads')}
-            className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'leads'
-                ? 'bg-white/10 text-white shadow-xs'
+                ? 'bg-white/15 text-white shadow-xs font-bold'
                 : 'text-white/80 hover:text-white hover:bg-white/5'
             }`}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            Leads Data
+            <span className="truncate">Leads Data</span>
           </button>
 
           {/* Inventory Menu */}
           <button
             onClick={() => handleTabSelect('inventory')}
-            className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'inventory'
-                ? 'bg-white/10 text-white shadow-xs'
+                ? 'bg-white/15 text-white shadow-xs font-bold'
                 : 'text-white/80 hover:text-white hover:bg-white/5'
             }`}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            Inventory
+            <span className="truncate">Inventory</span>
           </button>
 
-          {/* Add Consultant Menu */}
+          {/* Consultants Menu */}
           <button
             onClick={() => handleTabSelect('consultants')}
-            className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'consultants'
-                ? 'bg-white/10 text-white shadow-xs'
+                ? 'bg-white/15 text-white shadow-xs font-bold'
                 : 'text-white/80 hover:text-white hover:bg-white/5'
             }`}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
-            Add Consultant
+            <span className="truncate">Add Consultant</span>
           </button>
         </nav>
 
         {/* Footer Logout */}
-        <div className="p-4">
+        <div className="p-3.5 shrink-0">
           <button
             onClick={onLogout}
-            className="w-full flex items-center gap-3.5 px-4 py-3 border border-white/10 rounded-xl text-sm font-semibold text-white hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer"
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 border border-white/15 rounded-xl text-xs font-semibold text-white hover:bg-white/10 hover:border-white/25 transition-all cursor-pointer"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            Sign Out
+            <span className="truncate">Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* RIGHT CONTENT CONTAINER */}
-      <main className="flex-1 md:pl-[312px] min-h-screen w-full flex flex-col">
+      <main className="flex-1 md:pl-[275px] min-h-screen w-full flex flex-col">
         <div className="flex-1 bg-[#FAF7F2] md:my-4 md:mr-4 md:rounded-3xl md:shadow-md flex flex-col overflow-hidden border border-slate-100/50 h-screen md:h-[calc(100vh-32px)] relative">
           {/* Top Navbar */}
           <header className="h-[70px] bg-[#FAF7F2] border-b border-slate-100 flex items-center justify-between px-4 md:px-6 shrink-0 select-none">
@@ -543,7 +543,7 @@ export default function Dashboard({ token, user, onLogout }) {
           </header>
 
           {/* Content Tab (Scrollable inside the card) */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8">
+          <div className="flex-1 overflow-y-auto p-4 md:p-5">
             {renderTabContent()}
           </div>
         </div>

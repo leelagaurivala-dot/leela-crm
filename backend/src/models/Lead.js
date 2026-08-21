@@ -39,6 +39,26 @@ const leadSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    medicalHistory: {
+      type: String,
+      default: '',
+    },
+    wearingRudraksh: {
+      type: String,
+      default: '',
+    },
+    preferredTime: {
+      type: String,
+      default: '',
+    },
+    websiteProduct: {
+      type: String,
+      default: '',
+    },
+    donationAmount: {
+      type: String,
+      default: '0',
+    },
     concern: {
       type: String,
       default: '',

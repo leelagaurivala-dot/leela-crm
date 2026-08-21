@@ -46,11 +46,18 @@ Client Profile:
 - WhatsApp Number: ${lead.whatsapp || lead.phone || 'Not provided'}
 - Current Location: ${lead.location || 'Not provided'}
 - Occupation: ${lead.occupation || 'Not provided'}
+- Preferred Consultation Time: ${lead.preferredTime || 'Not specified'}
 
 Birth Details:
 - Date of Birth: ${lead.dob || 'Not provided'}
 - Time of Birth: ${lead.tob || 'Not provided'}
 - Place of Birth: ${lead.pob || 'Not provided'}
+
+Consultation Details:
+- Medical History: ${lead.medicalHistory || 'None'}
+- Rudraksh / Crystal Products: ${lead.wearingRudraksh || 'None'}
+- Website Product Interest: ${lead.websiteProduct || 'None'}
+- Optional Donation Contribution: ₹${lead.donationAmount || '0'}
 
 Area of Concern:
 ${lead.concern || lead.message || 'No concern details specified.'}
@@ -60,7 +67,7 @@ Log in to the dashboard to update status.
 Regards,
 Leela CRM System`,
       html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1e293b; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1e293b; max-width: 650px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
           <!-- Header -->
           <div style="background-color: #61191c; color: white; padding: 25px; text-align: center;">
             <h2 style="margin: 0; font-size: 1.5rem; font-weight: bold; letter-spacing: -0.025em;">New Lead Assignment</h2>
@@ -77,7 +84,7 @@ Leela CRM System`,
               <h3 style="margin-top: 0; color: #61191c; font-size: 0.95rem; border-bottom: 1.5px solid rgba(97, 25, 28, 0.1); padding-bottom: 6px; text-transform: uppercase;">Client Profile</h3>
               <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
                 <tr>
-                  <th style="padding: 6px 0; color: #475569; width: 35%;">Full Name:</th>
+                  <th style="padding: 6px 0; color: #475569; width: 40%;">Full Name:</th>
                   <td style="padding: 6px 0; font-weight: bold; color: #0f172a;">${lead.name}</td>
                 </tr>
                 <tr>
@@ -96,6 +103,10 @@ Leela CRM System`,
                   <th style="padding: 6px 0; color: #475569;">Occupation:</th>
                   <td style="padding: 6px 0; color: #0f172a;">${lead.occupation || 'Not provided'}</td>
                 </tr>
+                <tr>
+                  <th style="padding: 6px 0; color: #475569;">Preferred Time:</th>
+                  <td style="padding: 6px 0; color: #0f172a;">${lead.preferredTime || 'Not specified'}</td>
+                </tr>
               </table>
             </div>
 
@@ -104,7 +115,7 @@ Leela CRM System`,
               <h3 style="margin-top: 0; color: #61191c; font-size: 0.95rem; border-bottom: 1.5px solid rgba(97, 25, 28, 0.1); padding-bottom: 6px; text-transform: uppercase;">Birth Details</h3>
               <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
                 <tr>
-                  <th style="padding: 6px 0; color: #475569; width: 35%;">Date of Birth:</th>
+                  <th style="padding: 6px 0; color: #475569; width: 40%;">Date of Birth:</th>
                   <td style="padding: 6px 0; font-weight: bold; color: #0f172a;">${lead.dob || 'Not provided'}</td>
                 </tr>
                 <tr>
@@ -114,6 +125,29 @@ Leela CRM System`,
                 <tr>
                   <th style="padding: 6px 0; color: #475569;">Place of Birth:</th>
                   <td style="padding: 6px 0; font-weight: bold; color: #0f172a;">${lead.pob || 'Not provided'}</td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- Section: Vedic Consultation Info -->
+            <div style="background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 18px;">
+              <h3 style="margin-top: 0; color: #61191c; font-size: 0.95rem; border-bottom: 1.5px solid rgba(97, 25, 28, 0.1); padding-bottom: 6px; text-transform: uppercase;">Consultation Details</h3>
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+                <tr>
+                  <th style="padding: 6px 0; color: #475569; width: 40%;">Medical History:</th>
+                  <td style="padding: 6px 0; color: #0f172a;">${lead.medicalHistory || 'None'}</td>
+                </tr>
+                <tr>
+                  <th style="padding: 6px 0; color: #475569;">Rudraksh/Crystals:</th>
+                  <td style="padding: 6px 0; color: #0f172a;">${lead.wearingRudraksh || 'None'}</td>
+                </tr>
+                <tr>
+                  <th style="padding: 6px 0; color: #475569;">Website Product Interest:</th>
+                  <td style="padding: 6px 0; color: #0f172a;">${lead.websiteProduct || 'None'}</td>
+                </tr>
+                <tr>
+                  <th style="padding: 6px 0; color: #475569;">Donation Contribution:</th>
+                  <td style="padding: 6px 0; font-weight: bold; color: #16a34a;">₹${lead.donationAmount || '0'}</td>
                 </tr>
               </table>
             </div>
